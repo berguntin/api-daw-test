@@ -129,7 +129,7 @@ app.post('/', (request, response) => {
       
 })
 
-const PORT = 1000;
-app.listen(PORT, () => {
+const port = process.env.PORT || 3001;
+app.listen(port, () => {
   console.log('Server running on port ' + PORT)
 })
