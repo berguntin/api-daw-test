@@ -9,9 +9,7 @@ const Quiz = require('./models/Quiz')
 app.use(express.json())
 
 // Configurar cabeceras y cors
-app.use(cors({
-  origin: ['http://localhost:4200', 'http://localhost']
-}));
+app.use(cors());
 
 //get all quizzies
 app.get('/api/quizzies', (request, response) => {
@@ -131,7 +129,7 @@ app.post('/', (request, response) => {
       
 })
 
-const PORT = 3001;
+const PORT = 80;
 app.listen(PORT, () => {
   console.log('Server running on port ' + PORT)
 })
