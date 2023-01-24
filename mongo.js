@@ -1,12 +1,12 @@
 const mongoose = require('mongoose')
+require ('dotenv').config()
+
+const connectionString = process.env.MONGO_URI;
 
 
-const connectionString = "mongodb+srv://foc:1234@cluster0.wavamto.mongodb.net/quizzies?retryWrites=true&w=majority";
+//MongoDB connection
 
-
-//conexion a mongo db
-
-mongoose.connect(connectionString,)
+mongoose.connect(connectionString)
     .then(() => {
         console.log('Database connected')
     }).catch( err => {

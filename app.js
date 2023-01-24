@@ -1,16 +1,23 @@
 require('./mongo')
+require ('dotenv').config()
 var ObjectId = require('mongodb').ObjectId
-const { response, request } = require('express');
-const express = require('express');
-const cors = require('cors');
-const app = express();
+const { response, request } = require('express')
+const express = require('express')
+const cors = require('cors')
+const app = express()
 const Quiz = require('./models/Quiz')
+const mongoose = require('mongoose')
 
+//use json format
 app.use(express.json())
-
-// Configurar cabeceras y cors
+//configure cors policy
 app.use(cors());
 
+/**-------------------GET METHODS-------------------*/
+//home page
+app.get('/', (request, response) => {
+  response.send('<h1>Bienvenido a la API de cuestionarios de DAW</h1>').end()
+})
 //get all quizzies
 app.get('/api/quizzies', (request, response) => {
   Quiz.find({})
@@ -21,8 +28,8 @@ app.get('/api/quizzies', (request, response) => {
 //return a list of subjects availables
 app.get('/api/subjects', (request, response) => {
   Quiz.distinct('subject')
-  .then(subject => {
-    response.json(subject)
+    .then(subject => {
+      response.json(subject)
   })
 })
 //return a list of ud's availables for subject passed as parameter
@@ -48,21 +55,6 @@ app.get('/api/:subject/:ud', (request, response) => {
       console.log(err)
     })
 })
-/* // get all quizzies for subject especified
-app.get('/api/quizzies/:subject', (request, response) => {
-  const {subject} = request.params
-  console.log(request.url)
-  Quiz.find({subject: subject})
-    .then(quiz => {
-      if(quiz) {
-        return response.json(quiz)
-      }else {
-        response.status(404).end()
-      }
-    }).catch(err => {
-        console.log(err)
-      })
-}) */
 //get quizzies fitered by subject and ud
 app.get('/api/quizzies/:subject/:ud', (request, response) => {
   const {subject} = request.params
@@ -79,30 +71,11 @@ app.get('/api/quizzies/:subject/:ud', (request, response) => {
       console.log(err)
     })
 })
-//get correct answers for quiz
-/* app.get('/api/check/:quiz', (request, response) => {
-  const id  = new ObjectId(request.params.quiz)
-  console.log(request.url)
-  Quiz.findById(id)
-    .then(quiz => {
-        if(quiz){
-          response.json(quiz)
-        }
-        else{
-          response.status(404).send('No existen registros para estos parametros, revisa la url').end()
-        }
-      }).catch(err => {
-        console.log(err)
-      })
-
-    }) */
-
 //get quizzies fitered by subject, ud and ra
 app.get('/api/quizzies/:subject/:ud/:ra', (request, response) => {
   const {subject} = request.params
   const ud = Number(request.params.ud)
   const { ra } = request.params
-  console.log(request.url)
   Quiz.find({subject: subject, ud: ud, ra: ra})
     .then(quiz => {
       if(quiz){
@@ -114,7 +87,8 @@ app.get('/api/quizzies/:subject/:ud/:ra', (request, response) => {
       console.log(err)
     })
 })
-app.post('/', (request, response) => {
+/**-------------------POST METHOD-------------------*/
+app.post('/upload', (request, response) => {
     console.log(request.url)
     quiz = new Quiz(request.body)
     quiz.save()
@@ -129,7 +103,7 @@ app.post('/', (request, response) => {
       
 })
 
-const port = process.env.PORT;
+const port = process.env.PORT || 3001;
 app.listen(port, () => {
   console.log('Server running on port ' + port)
 })
