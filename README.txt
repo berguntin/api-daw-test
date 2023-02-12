@@ -1,4 +1,4 @@
-This project was made for learning purposes. Provides a API for getting data from mongodb Database. 
+This project was made for learning purposes. Provides an API that retrieves data from mongodb Database. 
 The data consist in a serie of quizzes of various subjects form spanish Web Development Certificate of Higher Education
 
 Data is consumed by other app live on http://cuestionariosdaw.atwebpages.com/
